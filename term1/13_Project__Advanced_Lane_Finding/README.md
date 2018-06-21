@@ -7,7 +7,7 @@
 * straight_lines1_combined_thresholds.jpg : An example of lane detection results using combined threshold.
 * straight_lines1_perspective_transform.jpg : An example of perspective transformation of lane detection results.
 * straight_lines*.jpg, test*.jpg: Examples of lane boundary detection results in both of car view and bird eye view, and estimation results of radius and car position.
-* (YouTube Video)[https://youtu.be/d8P2C7rUuRU] : Video output of Lane Detection results
+* [YouTube Video](https://youtu.be/d8P2C7rUuRU) : Video output of Lane Detection results
 
 [//]: # (Image References)
 
@@ -126,7 +126,7 @@ I implemented this step in a function called 'DetectLanes()' in my code in `Adva
 
 ### 1. Provide a link to your final video output.  Your pipeline should perform reasonably well on the entire project video (wobbly lines are ok but no catastrophic failures that would cause the car to drive off the road!).
 
-Here's a (YouTube Video)[https://youtu.be/d8P2C7rUuRU]
+Here's a [YouTube Video](https://youtu.be/d8P2C7rUuRU)
 
 ---
 
