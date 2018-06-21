@@ -1,4 +1,4 @@
-# 13. Advanced Lane Finding Project**
+# 13. Advanced Lane Finding Project
 
 ## 1. List of files
 * AdvancedLaneLines.ipynb : program of ipython notebook
