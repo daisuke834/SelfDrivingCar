@@ -51,7 +51,7 @@ I used twiddle and its derivations for the fine tuning of hyperparameters to cho
 ---
 ### 2-4. Simulation
 #### 2-4-1. CRITERIA: The vehicle must successfully drive a lap around the track.
-The vehicle successfully drove a lap around the track. Please refer to [video.mp4](./video.mp4).
+The vehicle successfully drove a lap around the track. Please refer to [YouTube video](https://youtu.be/T8Dys44A53E).
 
 ![cte.png][cte.png]
 ![speed.png][speed.png]
