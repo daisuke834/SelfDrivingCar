@@ -27,10 +27,10 @@ My code was successfully compiled without errors.
 #### 2-2-1. CRITERIA: The Model. Student describes their model in detail. This includes the state, actuators and update equations.
 My model is based on the following equations:
 ![model.png][model.png]
-
+I used a vehicle coordinate system instead of world coordinate system to fit the model.
 
 #### 2-2-2. CRITERIA: Timestep Length and Elapsed Duration (N & dt). Student discusses the reasoning behind the chosen N (timestep length) and dt (elapsed duration between timesteps) values. Additionally the student details the previous values tried.
-in MPC.cpp
+N and dt are configured in MPC.cpp as follows:
 ```cpp
 size_t N = 10;
 double dt = 0.1;
@@ -38,6 +38,7 @@ double dt = 0.1;
 
 #### 2-2-3. CRITERIA: Polynomial Fitting and MPC Preprocessing. A polynomial is fitted to waypoints. If the student preprocesses waypoints, the vehicle state, and/or actuators prior to the MPC procedure it is described.
 in main.cpp.
+Waypoints are preprocessed to transform from world coodinate system to vehicle coodinate system. Then the waypoints was fitted 3rd order polynomial.
 ```cpp
 Eigen::VectorXd ptsx_car_coodinate(ptsx.size());
 Eigen::VectorXd ptsy_car_coodinate(ptsy.size());
@@ -50,7 +51,8 @@ auto coeffs = polyfit(ptsx_car_coodinate, ptsy_car_coodinate, 3);
 ```
 
 #### 2-2-4. CRITERIA: Model Predictive Control with Latency. The student implements Model Predictive Control that handles a 100 millisecond latency. Student provides details on how they deal with latency.
-
+I measured the latency of the Model Predictive Control modules by using the following timer class.
+As a result, the latencies were distributing almost between 14msec and 45msec, and it was under 100msec upper bound.
 ```cpp
 class MyTime {
   std::chrono::system_clock::time_point start_time;
@@ -72,9 +74,8 @@ public:
   };
 };
 ```
-solver: duration = 14msec-45msec.
 
----
+
 ---
 ### 2-3. Simulation
 #### 2-3-1. CRITERIA: The vehicle must successfully drive a lap around the track.
