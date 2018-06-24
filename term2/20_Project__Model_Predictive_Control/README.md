@@ -28,15 +28,15 @@ My code was successfully compiled without errors.
 #### 2-2-1. CRITERIA: The Model. Student describes their model in detail. This includes the state, actuators and update equations.
 My model is based on the following equations. 
 ![mymodel.png][mymodel.png]  
-I used a vehicle coordinate system instead of world coordinate system to fit the model so that 3rd order polynomial is a good approximation of trajectory. Because the vehicle coordinate system is refreshed at every time step based on the current vehicle location, current egovehicle position (x, y, psi) are always fixed to zero.
+I used a vehicle coordinate system instead of world coordinate system to fit the model so that 3rd order polynomial is a good approximation of the given trajectory. Because the vehicle coordinate system as a relative coodinate is refreshed at every time step based on the current vehicle location, current egovehicle positions (x, y, psi) are always fixed to zero.
 
 #### 2-2-2. CRITERIA: Timestep Length and Elapsed Duration (N & dt). Student discusses the reasoning behind the chosen N (timestep length) and dt (elapsed duration between timesteps) values. Additionally the student details the previous values tried.
+I choosed N=10 and dt=0.1sec because of the following reasons.
 ```cpp
 size_t N = 10;
 double dt = 0.1;
 ```
-I choosed N=10 and dt=0.1sec because of the following reasons.
-- I choosed dt=0.1s because the latency of controllers is 100msec (=0.1s), and I hypothesized that it doesn't make positive effect if I choose finer resolution of dt. I tested dt=0.05s and 0.01s, and the performance became worse as I expected.
+- I choosed dt=0.1s because the latency of controllers is 100msec (=0.1s), and I hypothesized that it doesn't make positive effect if I choose finer resolution of dt. When I tested dt=0.05s and 0.01s, the performance became worse indeed as I expected.
 - I tried N=20 larger value of N than 20, however the it didn't work because the computing latency of  `MPC::Solve()` became larger than 100msec.
 
 
