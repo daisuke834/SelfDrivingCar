@@ -42,7 +42,7 @@ double dt = 0.1;
 
 #### 2-2-3. CRITERIA: Polynomial Fitting and MPC Preprocessing. A polynomial is fitted to waypoints. If the student preprocesses waypoints, the vehicle state, and/or actuators prior to the MPC procedure it is described.
 in main.cpp.
-Waypoints are pre-processed to transform from world coodinate system to vehicle coodinate system so that the waypoints was fitted 3rd order polynomial well.
+Waypoints are pre-processed to transform from world coodinate system to vehicle coodinate system so that the waypoints were fitted to 3rd order polynomial well.
 ```cpp
 Eigen::VectorXd ptsx_car_coodinate(ptsx.size());
 Eigen::VectorXd ptsy_car_coodinate(ptsy.size());
@@ -57,7 +57,7 @@ auto coeffs = polyfit(ptsx_car_coodinate, ptsy_car_coodinate, 3);
 #### 2-2-4. CRITERIA: Model Predictive Control with Latency. The student implements Model Predictive Control that handles a 100 millisecond latency. Student provides details on how they deal with latency.
 
 - I choosed dt=0.1s so that the discrete time step corresponds to the controller latency which is equal to 100ms.
-- I measured the latency of the Model Predictive Control modules by using the following timer class. As a result, the latencies were distributing around 10msec and 30msec, and it was under 100msec upper bound.
+- I measured the actual latencis of the Model Predictive Control modules by using the following timer class. As a result, the latencies were distributing around 10msec and 30msec, and the distribution was fitted in 100msec upper bound.
 ```cpp
 class MyTime {
   std::chrono::system_clock::time_point start_time;
