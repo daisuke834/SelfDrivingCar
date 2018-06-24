@@ -3,7 +3,7 @@
 ## 1. Files and environments
 ### 1-1. List of files
 * [src/\*.cpp, src/\*.h](./src/) : source codes of this project.
-* [YouTube video](https://youtu.be/QNcd7DGerJA): Screen shot video of simulator.
+* [YouTube video](https://youtu.be/Sg6Ga40LST8): Screen shot video of simulator.
 * [Model](./mymodel.png) : My model for this project.
 
 ### 1-2. Environment
@@ -26,25 +26,28 @@ My code was successfully compiled without errors.
 ---
 ### 2-2. Implementation
 #### 2-2-1. CRITERIA: The Model. Student describes their model in detail. This includes the state, actuators and update equations.
-My model is based on the following equations:
-![mymodel.png][mymodel.png]
-I used a vehicle coordinate system instead of world coordinate system to fit the model.
+My model is based on the following equations. 
+![mymodel.png][mymodel.png]  
+I used a vehicle coordinate system instead of world coordinate system to fit the model so that 3rd order polynomial is a good approximation of trajectory. Because the vehicle coordinate system is refreshed at every time step based on the current vehicle location, current egovehicle position (x, y, psi) are always fixed to zero.
 
 #### 2-2-2. CRITERIA: Timestep Length and Elapsed Duration (N & dt). Student discusses the reasoning behind the chosen N (timestep length) and dt (elapsed duration between timesteps) values. Additionally the student details the previous values tried.
-N and dt are configured in MPC.cpp as follows:
 ```cpp
 size_t N = 10;
 double dt = 0.1;
 ```
+I choosed N=10 and dt=0.1sec because of the following reasons.
+- I choosed dt=0.1s because the latency of controllers is 100msec (=0.1s), and I hypothesized that it doesn't make positive effect if I choose finer resolution of dt. I tested dt=0.05s and 0.01s, and the performance became worse as I expected.
+- I tried N=20 larger value of N than 20, however the it didn't work because the computing latency of  `MPC::Solve()` became larger than 100msec.
+
 
 #### 2-2-3. CRITERIA: Polynomial Fitting and MPC Preprocessing. A polynomial is fitted to waypoints. If the student preprocesses waypoints, the vehicle state, and/or actuators prior to the MPC procedure it is described.
 in main.cpp.
-Waypoints are preprocessed to transform from world coodinate system to vehicle coodinate system. Then the waypoints was fitted 3rd order polynomial.
+Waypoints are pre-processed to transform from world coodinate system to vehicle coodinate system so that the waypoints was fitted 3rd order polynomial well.
 ```cpp
 Eigen::VectorXd ptsx_car_coodinate(ptsx.size());
 Eigen::VectorXd ptsy_car_coodinate(ptsy.size());
-// Converting to car coodinate
-for(size_t i=0; i<ptsx.size(); i++){ //TODO. To be modified
+// Converting to vehicle coodinate
+for(size_t i=0; i<ptsx.size(); i++){
   ptsx_car_coodinate[i] =  (ptsx[i]-px)*cos(psi) + (ptsy[i]-py)*sin(psi);
   ptsy_car_coodinate[i] = -(ptsx[i]-px)*sin(psi) + (ptsy[i]-py)*cos(psi);
 }
@@ -52,8 +55,9 @@ auto coeffs = polyfit(ptsx_car_coodinate, ptsy_car_coodinate, 3);
 ```
 
 #### 2-2-4. CRITERIA: Model Predictive Control with Latency. The student implements Model Predictive Control that handles a 100 millisecond latency. Student provides details on how they deal with latency.
-I measured the latency of the Model Predictive Control modules by using the following timer class.
-As a result, the latencies were distributing almost between 14msec and 45msec, and it was under 100msec upper bound.
+
+- I choosed dt=0.1s so that the discrete time step corresponds to the controller latency which is equal to 100ms.
+- I measured the latency of the Model Predictive Control modules by using the following timer class. As a result, the latencies were distributing around 10msec and 30msec, and it was under 100msec upper bound.
 ```cpp
 class MyTime {
   std::chrono::system_clock::time_point start_time;
@@ -80,5 +84,5 @@ public:
 ---
 ### 2-3. Simulation
 #### 2-3-1. CRITERIA: The vehicle must successfully drive a lap around the track.
-The vehicle successfully drove a lap around the track. Please refer to [YouTube video](https://youtu.be/QNcd7DGerJA).
+The vehicle successfully drove a lap around the track. Please refer to [YouTube video](https://youtu.be/Sg6Ga40LST8).
 

@@ -114,6 +114,8 @@ int main() {
           double psi = j[1]["psi"];
           double v = j[1]["speed"];
 
+          update_current_control(j[1]["steering_angle"], j[1]["throttle"]);
+
           /*
           * TODO: Calculate steering angle and throttle using MPC.
           *
@@ -122,8 +124,8 @@ int main() {
           */
           Eigen::VectorXd ptsx_car_coodinate(ptsx.size());
           Eigen::VectorXd ptsy_car_coodinate(ptsy.size());
-          // Converting to car coodinate
-          for(size_t i=0; i<ptsx.size(); i++){ //TODO. To be modified
+          // Converting to vehicle coodinate
+          for(size_t i=0; i<ptsx.size(); i++){
             ptsx_car_coodinate[i] =  (ptsx[i]-px)*cos(psi) + (ptsy[i]-py)*sin(psi);
             ptsy_car_coodinate[i] = -(ptsx[i]-px)*sin(psi) + (ptsy[i]-py)*cos(psi);
           }
@@ -133,25 +135,26 @@ int main() {
           double epsi = 0 - atan(coeffs[1]);
           //double epsi = psi - atan(coeffs[1]);
           cout << "cte= "<<cte<<",\tepsi="<<epsi<<endl;
-          double max_v = 40.0;
+          /*double max_v = 40.0;
           double min_v = 30.0;
-          // if(cte>1.5){change_ref_v(min_v);}
-          // else{change_ref_v(max_v);}
+          if(cte>1.5){change_ref_v(min_v);}
+          else{change_ref_v(max_v);}*/
 
           Eigen::VectorXd state(6);
           state << 0, 0, 0, v, cte, epsi;
 
-          std::vector<double> x_vals = {state[0]};
-          std::vector<double> y_vals = {state[1]};
           double steer_value;
           double throttle_value;
 
-          mytime.tick();
-          auto vars = mpc.Solve(state, coeffs);
-          x_vals.push_back(vars[0]);
-          y_vals.push_back(vars[1]);
+          //Display the MPC predicted trajectory 
+          vector<double> mpc_x_vals; //TODO?
+          vector<double> mpc_y_vals; //TODO?
 
-          steer_value = vars[6] * (-1.0);
+          mytime.tick();
+          // auto vars = mpc.Solve(state, coeffs);
+          auto vars = mpc.Solve(state, coeffs, mpc_x_vals, mpc_y_vals);
+
+          steer_value = vars[6];
           throttle_value = vars[7];
           //if(cte>1.3 && throttle_value>0.0) throttle_value=0;
 
@@ -165,9 +168,6 @@ int main() {
           msgJson["steering_angle"] = steer_value/deg2rad(25);
           msgJson["throttle"] = throttle_value;
 
-          //Display the MPC predicted trajectory 
-          vector<double> mpc_x_vals = x_vals; //TODO?
-          vector<double> mpc_y_vals = y_vals; //TODO?
 
           //.. add (x,y) points to list here, points are in reference to the vehicle's coordinate system
           // the points in the simulator are connected by a Green line
