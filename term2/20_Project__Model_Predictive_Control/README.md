@@ -4,6 +4,7 @@
 ### 1-1. List of files
 * [src/\*.cpp, src/\*.h](./src/) : source codes of this project.
 * [YouTube video](https://youtu.be/QNcd7DGerJA): Screen shot video of simulator.
+* [Model](./mymodel.png) : My model for this project.
 
 ### 1-2. Environment
 My code successfully compiled with cmake and make using default CMakeLists.txt in the following environments:
@@ -13,7 +14,7 @@ My code successfully compiled with cmake and make using default CMakeLists.txt i
 * gcc/g++ v5.4.0
 
 [//]: # (Image References)
-[model.png]: ./model.png
+[mymodel.png]: ./mymodel.png
 
 ---
 ## 2. Writeup / README
@@ -26,7 +27,7 @@ My code was successfully compiled without errors.
 ### 2-2. Implementation
 #### 2-2-1. CRITERIA: The Model. Student describes their model in detail. This includes the state, actuators and update equations.
 My model is based on the following equations:
-![model.png][model.png]
+![mymodel.png][mymodel.png]
 I used a vehicle coordinate system instead of world coordinate system to fit the model.
 
 #### 2-2-2. CRITERIA: Timestep Length and Elapsed Duration (N & dt). Student discusses the reasoning behind the chosen N (timestep length) and dt (elapsed duration between timesteps) values. Additionally the student details the previous values tried.
