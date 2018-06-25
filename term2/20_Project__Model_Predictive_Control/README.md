@@ -66,6 +66,8 @@ double n_psi = - v * delta / Lf * latency_dt;
 double n_v = v + a * latency_dt;
 double n_cte = cte + v * sin(epsi) * latency_dt;
 double n_epsi = epsi  - v * delta / Lf * latency_dt;
+Eigen::VectorXd state(6);
+state << n_px, n_py, n_psi, n_v, n_cte, n_epsi;
 ```
 
 ---
