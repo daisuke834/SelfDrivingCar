@@ -26,7 +26,7 @@ My code was successfully compiled without errors.
 ---
 ### 2-2. Implementation
 #### 2-2-1. CRITERIA: The Model. Student describes their model in detail. This includes the state, actuators and update equations.
-My model is based on the following equations. 
+My model which was implemented in MPC.cpp is based on the following equations. 
 ![mymodel.png][mymodel.png]  
 I used a vehicle coordinate system instead of world coordinate system to fit the model so that 3rd order polynomial is a good approximation of the given trajectory. Because the vehicle coordinate system as a relative coodinate is refreshed at every time step based on the current vehicle location, current egovehicle positions (x, y, psi) are always fixed to zero.
 
@@ -41,8 +41,7 @@ double dt = 0.1;
 
 
 #### 2-2-3. CRITERIA: Polynomial Fitting and MPC Preprocessing. A polynomial is fitted to waypoints. If the student preprocesses waypoints, the vehicle state, and/or actuators prior to the MPC procedure it is described.
-in main.cpp.
-Waypoints are pre-processed to transform from world coodinate system to vehicle coodinate system so that the waypoints were fitted to 3rd order polynomial well.
+In main.cpp, waypoints are pre-processed to transform from world coodinate system to vehicle coodinate system so that the waypoints were fitted to 3rd order polynomial well.
 ```cpp
 Eigen::VectorXd ptsx_car_coodinate(ptsx.size());
 Eigen::VectorXd ptsy_car_coodinate(ptsy.size());
@@ -55,7 +54,7 @@ auto coeffs = polyfit(ptsx_car_coodinate, ptsy_car_coodinate, 3);
 ```
 
 #### 2-2-4. CRITERIA: Model Predictive Control with Latency. The student implements Model Predictive Control that handles a 100 millisecond latency. Student provides details on how they deal with latency.
-I implemented a latency handling of model predictive control in main.cpp by extrapolating the vehicle state by 100msec further. 
+In main.cpp, I implemented a latency handling of model predictive control by extrapolating the vehicle state by 100msec further. 
 ```cpp
 double Lf = 2.67;
 double latency_dt = 0.1;
