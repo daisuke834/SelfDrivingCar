@@ -59,7 +59,7 @@ class FG_eval {
 
     // The part of the cost based on the reference state.
     for (size_t t = 0; t < N; t++) {
-      fg[0] += 1.0 * CppAD::pow(vars[cte_start + t], 2);
+      fg[0] += 5.0 * CppAD::pow(vars[cte_start + t], 2);
       fg[0] += 10.0 * CppAD::pow(vars[epsi_start + t], 2);
       fg[0] += 1.0 * CppAD::pow(vars[v_start + t] - ref_v, 2);
     }
@@ -126,7 +126,8 @@ class FG_eval {
         a0 = c_a;
       }*/
 
-      AD<double> f0 = coeffs[0] + coeffs[1] * x0;
+      // AD<double> f0 = coeffs[0] + coeffs[1] * x0;
+      AD<double> f0 = coeffs[0] + coeffs[1] * x0 + coeffs[2]*CppAD::pow(x0, 2) + coeffs[3]*CppAD::pow(x0, 3);
       AD<double> psides0 = CppAD::atan(coeffs[1]);
 
       fg[1 + x_start + t] = x1 - (x0 + v0 * CppAD::cos(psi0) * dt);
@@ -269,7 +270,7 @@ vector<double> MPC::Solve(Eigen::VectorXd state, Eigen::VectorXd coeffs, vector<
   
   xs.clear();
   ys.clear();
-  for(size_t i=1; i<N; i++){
+  for(size_t i=0; i<N; i++){
     xs.push_back(solution.x[x_start + i]);
     ys.push_back(solution.x[y_start + i]);
   }

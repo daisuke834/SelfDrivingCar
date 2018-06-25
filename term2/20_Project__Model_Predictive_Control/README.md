@@ -3,7 +3,7 @@
 ## 1. Files and environments
 ### 1-1. List of files
 * [src/\*.cpp, src/\*.h](./src/) : source codes of this project.
-* [YouTube video](https://youtu.be/Sg6Ga40LST8): Screen shot video of simulator.
+* [YouTube video](https://youtu.be/Id4kF94xoDk): Screen shot video of simulator.
 * [Model](./mymodel.png) : My model for this project.
 
 ### 1-2. Environment
@@ -36,8 +36,8 @@ I choosed N=10 and dt=0.1sec because of the following reasons.
 size_t N = 10;
 double dt = 0.1;
 ```
-- I choosed dt=0.1s because the latency of controllers is 100msec (=0.1s), and I hypothesized that it doesn't make positive effect if I choose finer resolution of dt. When I tested dt=0.05s and 0.01s, the performance became worse indeed as I expected.
-- I tried N=20 larger value of N than 20, however the it didn't work because the computing latency of  `MPC::Solve()` became larger than 100msec.
+- I choosed dt=0.1s because the latency of controllers is 100msec (=0.1s), and I hypothesized that it doesn't make positive effect if I choose finer resolution of dt. When I tested dt=0.05s and 0.01s, the performance became worse (unstable) indeed as I expected.
+- I tried N=15 and N=20, however the it didn't work because the performance became worse (unstable). When I checked the visualization of the model predicted trajectory, the trajectory looks unstable, and I guess some overfitting is happening because of too many fitting parameters by incleasing N.
 
 
 #### 2-2-3. CRITERIA: Polynomial Fitting and MPC Preprocessing. A polynomial is fitted to waypoints. If the student preprocesses waypoints, the vehicle state, and/or actuators prior to the MPC procedure it is described.
@@ -55,34 +55,22 @@ auto coeffs = polyfit(ptsx_car_coodinate, ptsy_car_coodinate, 3);
 ```
 
 #### 2-2-4. CRITERIA: Model Predictive Control with Latency. The student implements Model Predictive Control that handles a 100 millisecond latency. Student provides details on how they deal with latency.
-
-- I choosed dt=0.1s so that the discrete time step corresponds to the controller latency which is equal to 100ms.
-- I measured the actual latencis of the Model Predictive Control modules by using the following timer class. As a result, the latencies were distributing around 10msec and 30msec, and the distribution was fitted in 100msec upper bound.
+I implemented a latency handling of model predictive control in main.cpp by extrapolating the vehicle state by 100msec further. 
 ```cpp
-class MyTime {
-  std::chrono::system_clock::time_point start_time;
-public:
-  void tick(){
-    start_time = std::chrono::system_clock::now();
-  };
-  void tack(string txt){
-    std::chrono::system_clock::time_point end_time = std::chrono::system_clock::now();
-    auto elapsed = std::chrono::duration_cast< std::chrono::milliseconds >(end_time - start_time).count();
-    std::cout << txt << ": duration = " << elapsed << "msec.\n";
-  };
-  void tack(void){
-    tack(string("Time"));
-  }
-  double measure(){
-    std::chrono::system_clock::time_point end_time = std::chrono::system_clock::now();
-    return std::chrono::duration_cast< std::chrono::milliseconds >(end_time - start_time).count();
-  };
-};
+double Lf = 2.67;
+double latency_dt = 0.1;
+double delta = j[1]["steering_angle"];
+double a = j[1]["throttle"];
+double n_px = v * latency_dt;
+double n_py = 0;
+double n_psi = - v * delta / Lf * latency_dt;
+double n_v = v + a * latency_dt;
+double n_cte = cte + v * sin(epsi) * latency_dt;
+double n_epsi = epsi  - v * delta / Lf * latency_dt;
 ```
-
 
 ---
 ### 2-3. Simulation
 #### 2-3-1. CRITERIA: The vehicle must successfully drive a lap around the track.
-The vehicle successfully drove a lap around the track. Please refer to [YouTube video](https://youtu.be/Sg6Ga40LST8).
+The vehicle successfully drove a lap around the track. Please refer to [YouTube video](https://youtu.be/Id4kF94xoDk).
 

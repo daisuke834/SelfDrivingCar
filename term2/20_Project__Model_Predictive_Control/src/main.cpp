@@ -140,15 +140,29 @@ int main() {
           if(cte>1.5){change_ref_v(min_v);}
           else{change_ref_v(max_v);}*/
 
+          // Added Latency handling
+          double Lf = 2.67;
+          double latency_dt = 0.1;
+          double delta = j[1]["steering_angle"];
+          double a = j[1]["throttle"];
+          double n_px = v * latency_dt;
+          double n_py = 0;
+          double n_psi = - v * delta / Lf * latency_dt;
+          double n_v = v + a * latency_dt;
+          double n_cte = cte + v * sin(epsi) * latency_dt;
+          double n_epsi = epsi  - v * delta / Lf * latency_dt;
+
+
           Eigen::VectorXd state(6);
-          state << 0, 0, 0, v, cte, epsi;
+          // state << 0, 0, 0, v, cte, epsi;
+          state << n_px, n_py, n_psi, n_v, n_cte, n_epsi;
 
           double steer_value;
           double throttle_value;
 
           //Display the MPC predicted trajectory 
-          vector<double> mpc_x_vals; //TODO?
-          vector<double> mpc_y_vals; //TODO?
+          vector<double> mpc_x_vals;
+          vector<double> mpc_y_vals;
 
           mytime.tick();
           // auto vars = mpc.Solve(state, coeffs);
