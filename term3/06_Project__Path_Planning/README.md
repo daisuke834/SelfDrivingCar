@@ -14,8 +14,8 @@ My code successfully compiled with cmake and make using default CMakeLists.txt i
 * gcc/g++ v5.4.0
 
 [//]: # (Image References)
-[StateMachine]: ./StateMachineChart.png
-[ScreenCapture]: ./ScreenCapture.png
+[StateMachine.png]: ./StateMachineChart.png
+[ScreenCapture.png]: ./ScreenCapture.png
 
 ---
 ## 2. Writeup / README
@@ -28,7 +28,7 @@ My code was successfully compiled without errors.
 ### 2-2. Valid Trajectories
 #### 2-2-1. CRITERIA: The car is able to drive at least 4.32 miles without incident.
 As shown in [YouTube video](https://youtu.be/Kau029bPIyg), the car drove more than 5 miles without incident.
-![ScreenCapture.png][ScreenCapture.png]  
+![ScreenCapture.png][./ScreenCapture.png]  
 
 #### 2-2-2. CRITERIA: The car drives according to the speed limit.
 The velocity of the car was limited under 49.5 miles/hour. When the car was not obstructed by traffic, the velocity was kept as fast as possible under the speed limit. Even when the car was obstructed by traffic, the velocity was kept around the velocity of the obstacle.
@@ -51,7 +51,7 @@ If the center lane of the 3 lanes was clear of the traffic, the car stayed at th
 ### 2-3. Reflection
 #### 2-3-1. CRITERIA: There is a reflection on how to generate paths.
 Here is a state machine chart of my finite state machine model.
-![StateMachineChart.png][StateMachineChart.png]  
+![StateMachineChart.png][./StateMachineChart.png]  
 This state machine was defined at `getSuccessorStates()` in `main.cpp`.
 The costs of its state transitions were difined at `calculateCost()` in `main.cpp` so that the vehicle can select the best maneuver with the smallest cost at `planBehavior()` in `main.cpp`. In the cost model, both of feasibility (do not enter out of the road), safety(do not collide with other vehicles) and comfort (do not change lanes too much) are being considered. The trajectory of the car is calculated at `getTrajectory()` in `main.cpp` for each maneuver. The trajectory was calculated by spline with using the target lane (`destination_lane`) and reference velocity (`ref_velocity_MPH`), 
 
